@@ -1,0 +1,299 @@
+<!DOCTYPE html> 
+<html lang="ca">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Per què es cancel·len les reserves d'hotel?</title>
+
+    <meta name="author" content="Natalia Munoz Moruno">
+    <meta name="description" content="Anàlisi de la demanda hotelera i de la cancel·lació">
+    <meta name="theme-color" content="#5FD2B2">
+
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script|Signika:300,700|Montserrat:900" rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: #5FD2B2;
+            --dark: #0B3C5D;
+            --light: #FAFAFA;
+            --text: #222;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Signika", sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.75;
+        }
+
+        nav {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            z-index: 100;
+        }
+
+        nav a {
+            background: var(--accent);
+            color: #000;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 100px 40px;
+        }
+
+        .full {
+            max-width: none;
+            padding: 120px 40px;
+        }
+
+        .header {
+            text-align: center;
+            background: linear-gradient(180deg, #EAF6F3, #FAFAFA);
+        }
+
+        .header h1 {
+            font-family: "Montserrat", sans-serif;
+            font-size: 3.4rem;
+            color: var(--dark);
+        }
+
+        .header span {
+            font-family: "Nanum Pen Script", cursive;
+            color: var(--accent);
+            font-size: 3.6rem;
+        }
+
+        h2 {
+            font-family: "Montserrat", sans-serif;
+            color: var(--dark);
+        }
+
+        h3 {
+            font-family: "Nanum Pen Script", cursive;
+            font-size: 2.2rem;
+            color: var(--dark);
+        }
+
+        .sketchy-underline {
+            border-bottom: 4px dashed var(--accent);
+            display: inline-block;
+        }
+
+        .chart-container {
+            margin: 50px 0 30px;
+        }
+
+        .explanation {
+            background: white;
+            border-left: 6px solid var(--accent);
+            padding: 20px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        .divider {
+            height: 1px;
+            background: #DDD;
+            margin: 80px auto;
+            max-width: 900px;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 100px 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <a href="#top">Torna a l'inici ↑</a>
+</nav>
+
+<a id="top"></a>
+
+<section class="header full">
+    <h1>Per què les reserves d'hotel <span>es cancel·len?</span></h1>
+    <p>
+        Un projecte de visualització narrativa interactiva que explora
+        la demanda hotelera, el comportament dels clients, els preus
+        i el risc de cancel·lació.
+    </p>
+</section>
+
+<div class="divider"></div>
+
+
+<section>
+    <h2>Introducció</h2>
+    <p>
+        L'objectiu d'aquesta visualització és entendre <b>per què es cancel·len
+        les reserves d'hotel</b>, transformant un conjunt de dades complex
+        i multivariable en una narrativa visual clara i accessible.
+    </p>
+    <p>
+        En lloc de centrar-se en models predictius, el projecte posa l'èmfasi
+        en la <b>comprensió exploratòria</b>: identificar patrons temporals,
+        factors de risc i comportaments dels clients que precedeixen
+        una cancel·lació.
+    </p>
+</section>
+
+<div class="divider"></div>
+
+<section>
+    <h2>Metodologia</h2>
+    <p>
+        Les dades utilitzades provenen de registres reals de reserves
+        de dos hotels a Portugal: un hotel urbà i un hotel resort.
+        Cada registre representa una reserva i inclou informació temporal,
+        demogràfica i comercial.
+    </p>
+    <p>
+        L'anàlisi s'ha realitzat amb <b>Python</b> per al processament de dades
+        i <b>Plotly</b> per a la creació de visualitzacions interactives.
+        El resultat final és un informe HTML de tipus <i>scrollytelling</i>,
+        que permet l'exploració sense necessitat d'un entorn de notebook.
+    </p>
+</section>
+
+<div class="divider"></div>
+
+
+<section>
+    <h2>Demostració</h2>
+    <p>
+        Aquesta visualització segueix una estructura narrativa basada en el
+        desplaçament vertical. A mesura que l'usuari fa scroll, es presenten
+        diferents perspectives analítiques.
+    </p>
+    <p>
+        Tots els gràfics són interactius: permeten passar el cursor per veure
+        valors exactes, activar o desactivar categories i ampliar zones
+        d'interès. Un botó fix facilita tornar a l'inici en qualsevol moment.
+    </p>
+</section>
+
+<div class="divider"></div>
+
+
+<section>
+    <h2>Anàlisi visual</h2>
+    <p>
+        Cada tipus de gràfic ha estat seleccionat seguint el marc de decisió
+        <b>Data-to-Viz</b>, assegurant que la forma visual s'adapta
+        a l'estructura de les dades i a la pregunta analítica.
+    </p>
+    <ul>
+        <li><b>Sèries temporals</b> per mostrar estacionalitat i tendències.</li>
+        <li><b>Gràfics de distribució</b> per analitzar incertesa i dispersió.</li>
+        <li><b>Mapes de calor</b> per detectar combinacions de risc elevat.</li>
+        <li><b>Gràfics de dispersió</b> per explorar relacions no lineals.</li>
+        <li><b>Mapes geogràfics</b> per contextualitzar l'origen dels clients.</li>
+        <li><b>Diagrames de flux</b> per entendre transicions entre estats.</li>
+    </ul>
+</section>
+
+<div class="divider"></div>
+
+
+<section>
+    <h3 class="sketchy-underline">Estacionalitat i demanda</h3>
+    <div class="chart-container">{{ viz1 }}</div>
+    <div class="explanation">
+        Aquest gràfic de sèries temporals mostra l'evolució mensual
+        de les reserves i la taxa de cancel·lació. S'observa una forta
+        estacionalitat, amb pics de demanda a la primavera i l'estiu,
+        així com un augment del risc de cancel·lació en períodes
+        d'alta demanda.
+    </div>
+</section>
+
+
+<section>
+    <h3 class="sketchy-underline">Temps d'antelació i incertesa</h3>
+    <div class="chart-container">{{ viz2 }}</div>
+    <div class="explanation">
+        El gràfic de violí mostra diferències clares entre les reserves
+        cancel·lades i les completades. Les reserves amb temps
+        d'antelació més llarg presenten una major dispersió i
+        un risc de cancel·lació significativament més elevat.
+    </div>
+</section>
+
+
+<section>
+    <h3 class="sketchy-underline">Qui cancel·la més?</h3>
+    <div class="chart-container">{{ viz3 }}</div>
+    <div class="explanation">
+        El mapa de calor revela combinacions específiques de segment
+        de mercat i canal de distribució amb taxes de cancel·lació
+        especialment altes, com ara les reserves de grups a través
+        d'agències.
+    </div>
+</section>
+
+
+<section>
+    <h3 class="sketchy-underline">Preu, temps i comportament</h3>
+    <div class="chart-container">{{ viz4 }}</div>
+    <div class="explanation">
+        El gràfic de dispersió amb suavitzat LOWESS mostra com la relació
+        entre preu (ADR) i temps d'antelació difereix segons si la reserva
+        es cancel·la o no. Les reserves cancel·lades tendeixen a mostrar
+        preus més baixos a mesura que augmenta l'antelació.
+    </div>
+</section>
+
+
+<section>
+    <h3 class="sketchy-underline">La geografia importa</h3>
+    <div class="chart-container">{{ viz5 }}</div>
+    <div class="explanation">
+        El mapa mostra diferències clares en la taxa de
+        cancel·lació segons el país d'origen del client, suggerint
+        factors culturals, econòmics o de mercat.
+    </div>
+</section>
+
+
+<section>
+    <h3 class="sketchy-underline">Del procés al resultat</h3>
+    <div class="chart-container">{{ viz6 }}</div>
+    <div class="explanation">
+        El diagrama de Sankey il·lustra el flux de les reserves
+        des del segment de mercat, passant pel tipus de dipòsit,
+        fins al resultat final. Es fa evident el paper clau
+        del tipus de dipòsit en la probabilitat de cancel·lació.
+    </div>
+</section>
+
+
+<footer>
+    <h3>Conclusions</h3>
+    <p>
+        Aquesta visualització mostra que les cancel·lacions hoteleres
+        no són un fenomen aïllat, sinó el resultat de múltiples factors
+        interconnectats. El format narratiu i interactiu permet
+        captar l'atenció de l'usuari i transformar dades complexes
+        en coneixement accionable.
+    </p>
+</footer>
+
+</body>
+</html>
